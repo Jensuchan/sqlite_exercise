@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+
+        <form action="/" method="get" id="rootForm"></form>
+        <img src="../image/{{ save_filename }}" alt="사진없음" width="300px" height="300px">
+        <p>파일명 : {{ save_filename[37:] }}</p>
+        <button type="button" id="classifBtn">이미지 분석하기</button>
+        <button type="button" id="back">돌아가기</button>
+        <br>
+        <br>
+        <div>
+            분석결과 : <span id="result"></span>
+        </div>
+    </div>
+</body>
+
+<script>
+
+    document.getElementById('back').addEventListener('click', ()=>{
+        document.getElementById('rootForm').submit();
+    })
+
+    document.getElementById('classifBtn').addEventListener('click', ()=>{
+        get_text().then(result => {
+            document.getElementById('classifBtn').disabled = true
+            const span = document.getElementById('result')
+            span.innerHTML = result
+        })
+
+
+    })
+
+    async function get_text(){
+        try {
+            const resp = await fetch("/classif");
+            const result = resp.text();
+
+            return result;
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+</script>
+
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    .fileBtn{
+        background-color: blue;
+        color: white;
+        border-radius: 15px;
+        width: 100px;
+        height: 50px;
+        font-weight: 700;
+        font-size: 15px;
+        cursor: pointer;
+    }
+
+</style>
+
+<body>
+    
+    <div id="container">  
+        <h1>
+            Root
+        </h1>
+        <form action="/image" enctype="multipart/form-data" id="form" method="post">
+            <input type="file" name="file" id="file" style="display: none">
+        </form>
+        <button type="button" id="trigger" class="fileBtn">Upload</button>
+        <br>
+    </div>
+    
+</body>
+
+
+<script>
+    console.log('imageValidation.js')
+
+    document.getElementById('trigger').addEventListener('click', ()=>{
+        document.getElementById('file').click();
+    })
+
+    const imgRegExp = new RegExp("\.(jpg|jpeg|png|gif)$")
+    const maxSize = 1024*1024*300; 
+
+    function fileValidation(fileName, fileSize){
+        if(!imgRegExp.test(fileName)){
+            return 0;
+        }else if(fileSize > maxSize){
+            return 0;
+        }else{
+            return 1;
+        }
+    }
+
+    document.addEventListener('change', (e)=>{
+    console.log(e.target);
+    if(e.target.id == 'file'){ 
+        const files = document.getElementById('file').files;
+        const file = files[0]
+        console.log(file);
+        console.log(file.name)
+        console.log(file.size)
+
+        let isOk = 1;
+
+        let validResult = fileValidation(file.name, file.size);
+
+        isOk *= validResult;
+
+        if(isOk == 0){
+            alert('Please upload an imagefile')
+            return
+        }
+
+        document.getElementById('form').submit();
+    }
+})
+
+
+
+</script>
+
+
+</html>
